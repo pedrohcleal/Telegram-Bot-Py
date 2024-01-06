@@ -1,69 +1,96 @@
- **README.md**
+# README
 
-# Telegram Bot for Bitcoin Price Updates
+## PH Telegram Bot
 
-This project creates a Telegram bot that periodically sends Bitcoin price updates to a specified group chat. It also interacts with users through basic commands and simple responses.
+This repository contains two main files, `main.py` and `InfoAPI.py`, which constitute the Telegram bot called "PH Bot". The bot is designed to operate in Telegram groups, responding to specific commands, and sending periodic messages with information about the Bitcoin price in relation to the Dollar (USDT).
 
-## Files
+### File `main.py`
 
-**main.py:**
+The `main.py` file is the main script of the bot, responsible for initializing and executing the bot's functionalities on Telegram. Below are the main components of the script:
 
-* Contains the main bot logic.
-* Handles commands, messages, and periodic updates.
-* Fetches Bitcoin price information from the Binance API.
+#### Dependencies
 
-**InfoAPI.py:**
+```python
+from typing import Final
+from telegram import Update, Bot
+from telegram.ext import ContextTypes, Application, CommandHandler, MessageHandler, filters, CallbackContext
+import asyncio, InfoAPI, os
+from dotenv import load_dotenv
+from datetime import datetime
+```
 
-* Provides a function to retrieve the current Bitcoin price from the Binance API.
+Make sure to have all the necessary libraries installed before running the script. You can install them using the command:
 
-## Setup
+```bash
+pip install python-telegram-bot[asyncio] python-dotenv
+```
 
-1. Install required libraries:
+#### Configurations
 
-   ```bash
-   pip install telegram telegram-ext python-binance dotenv
-   ```
+- Replace `'TOKEN'` with the token provided by BotFather.
+- Set the interval to send periodic messages in seconds (`PERIODIC_MESSAGE_INTERVAL`).
+- Replace `'YOUR_GROUP_ID'` with the ID of your group (you can use the `@get_id_bot` to get the group ID).
 
-2. Create a `.env` file in the project directory with the following variables:
+#### Main Functions
 
-   ```
-   TOKEN=YOUR_TELEGRAM_BOT_TOKEN
-   apikey=YOUR_BINANCE_API_KEY
-   secretkey=YOUR_BINANCE_API_SECRET
-   GRUPO_ID=YOUR_TELEGRAM_GROUP_ID
-   ```
+- `start_command`: Start command that responds with a greeting.
+- `help_command`: Help command that responds with information about available commands.
+- `custom_command`: Custom command that responds with a customizable message.
 
-   - Obtain a Telegram bot token from BotFather.
-   - Get your Binance API keys from Binance.
-   - Find the Telegram group ID using a bot like @get_id_bot.
+#### Message Handling
 
-## Running the Bot
+- `handle_responses`: Function to process and respond to specific messages.
+- `handle_message`: Function to handle received messages in the desired group.
 
-1. Execute the main script:
+#### Error Handling
 
-   ```bash
-   python main.py
-   ```
+- `error`: Function to handle errors and print information about them.
 
-## Bot Features
+#### Periodic Messages
 
-* **Periodic Updates:** Sends the current Bitcoin price to the specified group chat every 5 seconds (adjustable in `main.py`).
-* **Commands:**
-    - `/start`: Welcome message.
-    - `/help`: Provides a help message.
-    - `/custom`: Customizable command (currently responds with a fixed message).
-* **Simple Responses:** Responds to "ola" with "olá sr(a)".
-* **Error Handling:** Prints errors to the console.
+- `send_periodic_message`: Function to send periodic messages with the Bitcoin price in relation to the Dollar.
 
-## Future Enhancements
+#### Initialization and Execution
 
-* Add more commands and responses.
-* Improve error handling and logging.
-* Explore additional features and integrations.
+- The script creates an instance of the application, adds command, message, and error handlers, and starts the bot.
 
-**Important:**
+### File `InfoAPI.py`
 
-* Keep your API keys and token secure.
-* Respect Telegram's API usage guidelines.
+The `InfoAPI.py` file contains functionalities related to obtaining information about the Bitcoin price using the Binance API.
 
-Feel free to customize and extend this bot to fit your needs!
+#### Dependencies
+
+```python
+from binance import Client, ThreadedWebsocketManager, ThreadedDepthCacheManager
+import json
+from dotenv import load_dotenv
+import os
+```
+
+Make sure to have the `python-binance` library installed:
+
+```bash
+pip install python-binance
+```
+
+#### Configurations
+
+- Loads Binance API keys from the `.env` file.
+
+#### Main Functions
+
+- `price_btcusdt`: Returns the current price of Bitcoin in relation to the Dollar (USDT).
+
+#### Execution (example)
+
+- Prints the Bitcoin price and additional information if the script is executed directly.
+
+### Execution
+
+Make sure to configure the `.env` file correctly with your Binance API keys and your Telegram bot token before running the `main.py` script.
+
+```bash
+python main.py
+```
+
+This will start the bot and begin responding to commands, processing messages, and sending periodic updates in the specified group.

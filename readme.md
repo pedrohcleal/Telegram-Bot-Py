@@ -1,5 +1,3 @@
-# README
-
 ## PH Telegram Bot
 
 This repository contains two main files, `main.py` and `InfoAPI.py`, which constitute the Telegram bot called "PH Bot". The bot is designed to operate in Telegram groups, responding to specific commands, and sending periodic messages with information about the Bitcoin price in relation to the Dollar (USDT).
